@@ -1,0 +1,15 @@
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.AssemblyInfoInputs.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.AssemblyInfo.cs
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.csproj.CoreCompileInputs.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.sourcelink.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\bin\Debug\net8.0\airport_classes.exe
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\bin\Debug\net8.0\airport_classes.deps.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\bin\Debug\net8.0\airport_classes.runtimeconfig.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\bin\Debug\net8.0\airport_classes.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\bin\Debug\net8.0\airport_classes.pdb
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\refint\airport_classes.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.pdb
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\airport_classes.genruntimeconfig.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\prg-ASSG\airport_classes\airport_classes\obj\Debug\net8.0\ref\airport_classes.dll

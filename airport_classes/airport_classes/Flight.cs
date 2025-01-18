@@ -1,7 +1,8 @@
 ﻿
 namespace airport_classes
 {
-    abstract class Flight
+   
+    class Flight
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
