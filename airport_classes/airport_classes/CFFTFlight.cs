@@ -4,7 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace airport_classes
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
+namespace Classes
 {
     class CFFTFlight : Flight
     {
@@ -15,7 +21,7 @@ namespace airport_classes
         {
             RequestFee = rf;
         }
-        public override double CalculateFee(int n)
+        public override double CalculateFees(int n)
         {
             if (n < 0)
                 return -1;

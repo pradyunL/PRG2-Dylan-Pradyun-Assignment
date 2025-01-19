@@ -1,11 +1,16 @@
-﻿using airport_classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace airport_classes
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
+namespace Classes
 {
     class Airline
     {
@@ -33,11 +38,11 @@ namespace airport_classes
             Flights.Remove(f);
             return true;
         }
-        public double CalculateFee(string f, int n)
+        public double CalculateFees(string f, int n)
         {
             if (!Flights.ContainsKey(f))
                 return -1;
-            return Flights[f].CalculateFee(n);
+            return Flights[f].CalculateFees(n);
         }
         public override string ToString()
         {

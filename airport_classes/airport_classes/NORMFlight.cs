@@ -4,7 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace airport_classes
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
+namespace Classes
 {
     class NORMFlight : Flight
     {
@@ -12,6 +18,10 @@ namespace airport_classes
         public NORMFlight(string fn, string o, string dest, DateTime et, string s)
             : base(fn, o, dest, et, s)
         {
+        }
+        public override double CalculateFees(int n)
+        {
+            return 0;
         }
         public override string ToString()
         {

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using airport_classes;
+using Classes;
 
 //==========================================================
 // Student Number	: S10267635J
 // Student Name	: Dylan Loh
 // Partner Name	: Pradyun
 //==========================================================
-// feature 2
 
-class Program
+// Feature 2
+
+class Feature2
 {
     static void Main(string[] args)
     {

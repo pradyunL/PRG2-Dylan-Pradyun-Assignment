@@ -1,7 +1,12 @@
 ﻿
-namespace airport_classes
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
+namespace Classes
 {
-   
     class Flight
     {
         public string FlightNumber { get; set; }
@@ -18,7 +23,7 @@ namespace airport_classes
             ExpectedTime = et;
             Status = s;
         }
-        public virtual double CalculateFee(int n)
+        public virtual double CalculateFees(int n)
         {
             if (n < 0)
                 return -1;
