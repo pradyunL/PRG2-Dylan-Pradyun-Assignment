@@ -25,7 +25,8 @@ namespace Classes
         }
         public double CalculateFees()
         {
-            double TotalFee = 300;
+            double BaseFee = 300;
+            double TotalFee = 0;
             if (Destination == "SIN")
             {
                 TotalFee += 500;

@@ -13,3 +13,11 @@ C:\Users\prady\OneDrive - Ngee Ann Polytechnic\Semester 1.2\Programming II\PRG-A
 C:\Users\prady\OneDrive - Ngee Ann Polytechnic\Semester 1.2\Programming II\PRG-Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.pdb
 C:\Users\prady\OneDrive - Ngee Ann Polytechnic\Semester 1.2\Programming II\PRG-Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.genruntimeconfig.cache
 C:\Users\prady\OneDrive - Ngee Ann Polytechnic\Semester 1.2\Programming II\PRG-Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\ref\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.AssemblyInfoInputs.cache
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.AssemblyInfo.cs
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.csproj.CoreCompileInputs.cache
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.sourcelink.json
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\refint\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\Source\Repos\S10266910_PRG2Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.pdb

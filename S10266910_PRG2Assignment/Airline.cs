@@ -38,11 +38,15 @@ namespace Classes
             Flights.Remove(f);
             return true;
         }
-        public double CalculateFees(string f, int n)
+        public double CalculateFees()
         {
-            if (!Flights.ContainsKey(f))
-                return -1;
-            return Flights[f].CalculateFees(n);
+            double TotalFee = 0.0;
+            foreach (KeyValuePair<string, Flight> flight in Flights)
+            {
+                TotalFee += flight.Value.CalculateFees();
+            }
+            return TotalFee;
+
         }
         public override string ToString()
         {

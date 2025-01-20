@@ -11,49 +11,24 @@ using Classes;
 //==========================================================
 
 // Feature 2
+Dictionary<string, Flight> flightDict = new Dictionary<string, Flight>();
 
-class Feature2
+void ReadFlightDetails(string filepath)
 {
-    static void Main(string[] args)
+    
+    string[] lines = File.ReadAllLines(filepath);
+    for (int i = 1; i < lines.Length; i++)
     {
-        string filePath = "flights.csv";
-        Dictionary<string, Flight> flights = LoadFlights(filePath);
+        string line = lines[i];
+        string[] details = line.Split(',');
 
-        ListAllFlights(flights);
-    }
-    static Dictionary<string, Flight> LoadFlights(string filePath)
-    {
-        var flights = new Dictionary<string, Flight>();
-        var timeFormat = "h:mm tt";
+        string FlightNumber = details[0];
+        string Origin = details[1];
+        string Destination = details[2];
+        DateTime ExpectedTime = details[3];
 
-        var lines = File.ReadAllLines(filePath);
-        foreach (var line in lines.Skip(1)) // Skip header line
-        {
-            var values = line.Split(',');
-
-            if (DateTime.TryParse(values[3], out DateTime expectedTime))
-            {
-                var flight = new Flight(
-                    values[0], // FlightNumber
-                    values[1], // Origin
-                    values[2], // Destination
-                    expectedTime, // ExpectedTime
-                    values[4]  // Status
-                );
-                flights.Add(flight.FlightNumber, flight);
-            }
-        }
-
-        return flights;
-    }
-
-    static void ListAllFlights(Dictionary<string, Flight> flights)
-    {
-        Console.WriteLine($"{"Flight Number",-20} {"Origin",-20} {"Destination",-20} {"Expected",-25}");
-
-        foreach (var flight in flights.Values)
-        {
-            Console.WriteLine($"{flight.FlightNumber,-20} {flight.Origin,-20} {flight.Destination,-20} {flight.ExpectedTime:dd/MM/yyyy hh:mm tt}");
-        }
+        Flight flight = new Flight(FlightNumber, Origin, Destination, ExpectedTime);
+        flightDict.Add(flight);
     }
 }
+ReadFlightDetails("flight.csv");
