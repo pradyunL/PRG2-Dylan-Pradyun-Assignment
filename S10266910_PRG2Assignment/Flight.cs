@@ -7,7 +7,7 @@
 
 namespace Classes
 {
-    class Flight
+    abstract class Flight
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -23,11 +23,19 @@ namespace Classes
             ExpectedTime = et;
             Status = s;
         }
-        public virtual double CalculateFees(int n)
+        public double CalculateFees()
         {
-            if (n < 0)
-                return -1;
-            return n * 100;
+            double TotalFee = 300;
+            if (Destination == "SIN")
+            {
+                TotalFee += 500;
+            }
+            if (Origin == "SIN")
+            {
+                TotalFee += 800;
+            }
+
+            return TotalFee;
         }
         public override string ToString()
         {

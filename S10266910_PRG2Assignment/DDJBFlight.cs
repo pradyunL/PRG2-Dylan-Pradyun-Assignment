@@ -21,11 +21,19 @@ namespace Classes
         {
             RequestFee = rf;
         }
-        public override double CalculateFees(int n)
+        public double CalculateFees()
         {
-            if (n < 0)
-                return -1;
-            return n * RequestFee;
+            double BaseFee = 300;
+            double TotalFee = 0;
+            if (Destination == "SIN")
+            {
+                TotalFee = BaseFee + 500;
+            }
+            if (Origin == "SIN")
+            {
+                TotalFee = TotalFee + 800;
+            }
+            return TotalFee + 300;
         }
         public override string ToString()
         {
