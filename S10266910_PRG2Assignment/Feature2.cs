@@ -25,10 +25,23 @@ void ReadFlightDetails(string filepath)
         string FlightNumber = details[0];
         string Origin = details[1];
         string Destination = details[2];
-        DateTime ExpectedTime = details[3];
+        DateTime ExpectedTime = DateTime.Parse(details[3]);
 
         Flight flight = new Flight(FlightNumber, Origin, Destination, ExpectedTime);
         flightDict.Add(flight);
     }
 }
 ReadFlightDetails("flight.csv");
+
+void listAllFlights()
+{
+    Console.WriteLine("Flight Number   Airline Name           Origin                 Destination            Expected");
+    foreach (var airline in airlines)
+    {
+        foreach (var flight in airline.Flights.Values)
+        {
+            Console.WriteLine($"{flight.FlightNumber,-15} {airline.Name,-20} {flight.Origin,-20} {flight.Destination,-20} {flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-30}");
+        }
+    }
+}
+listAllFlights();

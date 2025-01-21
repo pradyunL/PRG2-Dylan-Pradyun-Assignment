@@ -40,13 +40,32 @@ namespace Classes
         }
         public double CalculateFees()
         {
-            double TotalFee = 0.0;
-            foreach (KeyValuePair<string, Flight> flight in Flights)
+            double discount = 0;
+            double totalFee = 0;
+            foreach (var flight in Flights.Values)
             {
-                TotalFee += flight.Value.CalculateFees();
+                if (flight % 3 ==0)
+                {
+                    discount += 350;
+                }
+                if (flight.ExpectedTime.Parse("11 AM") || flight.ExpectedTime.Parse("9 PM"))
+                {
+                    discount += 110;
+                }
+                if (flight.Origin == "DXB" || flight.Origin == "BKK" || flight.Origin == "NRT")) 
+                {
+                    discount += 25
+                }
+                if (flight is NORMFlight)
+                {
+                    discount += 50;
+                }
+                if (flight < 5)
+                {
+                    totalFee * 0.97;
+                }
             }
-            return TotalFee;
-
+            return totalFee - discount;
         }
         public override string ToString()
         {

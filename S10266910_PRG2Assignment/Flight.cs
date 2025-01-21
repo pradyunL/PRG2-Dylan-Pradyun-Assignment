@@ -35,7 +35,6 @@ namespace Classes
             {
                 TotalFee += 800;
             }
-
             return TotalFee;
         }
         public override string ToString()

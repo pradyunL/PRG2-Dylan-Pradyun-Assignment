@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using Classes;
-using Feature1;
-using Feature2;
 
 //==========================================================
 // Student Number	: S10267635J
@@ -13,4 +11,17 @@ using Feature2;
 //==========================================================
 
 // Feature 3
+
+void listAllFlights()
+{
+    Console.WriteLine("Flight Number   Airline Name           Origin                 Destination            Expected");
+    foreach (var airline in airlines)
+    {
+        foreach (var flight in airline.Flights.Values)
+        {
+            Console.WriteLine($"{flight.FlightNumber,-15} {airline.Name,-20} {flight.Origin,-20} {flight.Destination,-20} {flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-30}");
+        }
+    }
+}
+
 
