@@ -19,13 +19,26 @@ namespace Classes
         public DDJBFlight(string fn, string o, string dest, DateTime et, string s, double rf)
             : base(fn, o, dest, et, s)
         {
-            RequestFee = rf;
+            RequestFee = 300;
         }
-        public override double CalculateFees(int n)
+
+        public DDJBFlight(string fn, string o, string dest, DateTime et, string s) : base(fn, o, dest, et, s)
         {
-            if (n < 0)
-                return -1;
-            return n * RequestFee;
+        }
+
+        public double CalculateFees()
+        {
+            double BaseFee = 300;
+            double TotalFee = 0;
+            if (Destination == "SIN")
+            {
+                TotalFee = BaseFee + 500;
+            }
+            if (Origin == "SIN")
+            {
+                TotalFee = TotalFee + 800;
+            }
+            return TotalFee + RequestFee;
         }
         public override string ToString()
         {
@@ -36,3 +49,4 @@ namespace Classes
         }
     }
 }
+

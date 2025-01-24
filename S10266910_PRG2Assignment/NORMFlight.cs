@@ -19,9 +19,19 @@ namespace Classes
             : base(fn, o, dest, et, s)
         {
         }
-        public override double CalculateFees(int n)
+        public double CalculateFees()
         {
-            return 0;
+            double BaseFee = 300;
+            double TotalFee = 0;
+            if (Destination == "SIN")
+            {
+                TotalFee = BaseFee + 500;
+            }
+            if (Origin == "SIN")
+            {
+                TotalFee = TotalFee + 800;
+            }
+            return TotalFee;
         }
         public override string ToString()
         {

@@ -11,49 +11,44 @@ using Classes;
 //==========================================================
 
 // Feature 2
-
-class Feature2
+namespace S10266910_PRG2Assignment
 {
-    static void Main(string[] args)
+    class Feature2
     {
-        string filePath = "flights.csv";
-        Dictionary<string, Flight> flights = LoadFlights(filePath);
-
-        ListAllFlights(flights);
-    }
-    static Dictionary<string, Flight> LoadFlights(string filePath)
-    {
-        var flights = new Dictionary<string, Flight>();
-        var timeFormat = "h:mm tt";
-
-        var lines = File.ReadAllLines(filePath);
-        foreach (var line in lines.Skip(1)) // Skip header line
+        public Dictionary<string, Flight> FlightDict = new Dictionary<string, Flight>();
+        void readFlight(string filepath)
         {
-            var values = line.Split(',');
-
-            if (DateTime.TryParse(values[3], out DateTime expectedTime))
+            string[] lines = File.ReadAllLines(filepath);
+            for (int i = 1; i < lines.Length; i++)
             {
-                var flight = new Flight(
-                    values[0], // FlightNumber
-                    values[1], // Origin
-                    values[2], // Destination
-                    expectedTime, // ExpectedTime
-                    values[4]  // Status
-                );
-                flights.Add(flight.FlightNumber, flight);
+                string line = lines[i];
+                string[] data = line.Split(',');
+                string flightNumber = data[0];
+                string origin = data[1];
+                string destination = data[2];
+                DateTime expectedTime = DateTime.Parse(data[3]);
+                string status = data[4];
+                Flight flight;
+                if (status == "DDJB")
+                {
+                    flight = new DDJBFlight(flightNumber, origin, destination, expectedTime, status);
+                }
+                else if (status == "LWTT")
+                {
+                    flight = new LWTTFlight(flightNumber, origin, destination, expectedTime, status);
+                }
+                else if (status == "CFFT")
+                {
+                    flight = new CFFTFlight(flightNumber, origin, destination, expectedTime, status);
+                }
+                else
+                {
+                    flight = new NORMFlight(flightNumber, origin, destination, expectedTime, status);
+                }
+                FlightDict.Add(flightNumber, flight);
+
+                readFlight("flights.csv");
             }
-        }
-
-        return flights;
-    }
-
-    static void ListAllFlights(Dictionary<string, Flight> flights)
-    {
-        Console.WriteLine($"{"Flight Number",-20} {"Origin",-20} {"Destination",-20} {"Expected",-25}");
-
-        foreach (var flight in flights.Values)
-        {
-            Console.WriteLine($"{flight.FlightNumber,-20} {flight.Origin,-20} {flight.Destination,-20} {flight.ExpectedTime:dd/MM/yyyy hh:mm tt}");
         }
     }
 }
