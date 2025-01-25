@@ -63,7 +63,7 @@ namespace Classes
             {
                 foreach (var flight in airline.Flights.Values)
                 {
-                    Console.WriteLine($"Airline: {airline.Name}, Flight: {flight.FlightNumber}, Fee: {flight.CalculateFees(1)}");
+                    Console.WriteLine($"Airline: {airline.Name}, Flight: {flight.FlightNumber}, Fee: {flight.CalculateFees()}");
                 }
             }
         }
