@@ -19,8 +19,13 @@ namespace Classes
         public LWTTFlight(string fn, string o, string dest, DateTime et, string s, double rf)
             : base(fn, o, dest, et, s)
         {
-            RequestFee = rf;
+            RequestFee = 500;
         }
+
+        public LWTTFlight(string fn, string o, string dest, DateTime et, string s) : base(fn, o, dest, et, s)
+        {
+        }
+
         public double CalculateFees()
         {
             double BaseFee = 300;
@@ -33,7 +38,7 @@ namespace Classes
             {
                 TotalFee = TotalFee + 800;
             }
-            return TotalFee + 500;
+            return TotalFee + RequestFee;
         }
         public override string ToString()
         {

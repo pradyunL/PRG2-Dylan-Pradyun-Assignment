@@ -16,7 +16,7 @@ namespace Classes
     {
         public string Name { get; set; }
         public string Code { get; set; }
-        public Dictionary<string, Flight> Flights { get; set; }
+        public Dictionary<string, Flight> Flights { get; set; } = new Dictionary<string, Flight>();
         public Airline() { }
         public Airline(string n, string c)
         {
@@ -44,25 +44,25 @@ namespace Classes
             double totalFee = 0;
             foreach (var flight in Flights.Values)
             {
-                if (flight % 3 ==0)
+                if (int.Parse(flight.FlightNumber) % 3 == 0)
                 {
                     discount += 350;
                 }
-                if (flight.ExpectedTime.Parse("11 AM") || flight.ExpectedTime.Parse("9 PM"))
+                if (flight.ExpectedTime.ToString("hh tt") == "11 AM" || flight.ExpectedTime.ToString("hh tt") == "09 PM")
                 {
                     discount += 110;
                 }
-                if (flight.Origin == "DXB" || flight.Origin == "BKK" || flight.Origin == "NRT")) 
+                if (flight.Origin == "DXB" || flight.Origin == "BKK" || flight.Origin == "NRT")
                 {
-                    discount += 25
+                    discount += 25;
                 }
                 if (flight is NORMFlight)
                 {
                     discount += 50;
                 }
-                if (flight < 5)
+                if (flight.FlightNumber.Length < 5)
                 {
-                    totalFee * 0.97;
+                    totalFee *= 0.97;
                 }
             }
             return totalFee - discount;

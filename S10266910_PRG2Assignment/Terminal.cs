@@ -15,9 +15,9 @@ namespace Classes
     {
         public string terminalName { get; set; }
         public Dictionary<string, Airline> airlines { get; set; }
-        public Dictionary<string, Flight> flights { get; set; }
-        public Dictionary<string, BoardingGate> boardingGates { get; set; }
-        public Dictionary<string, double> gateFees { get; set; }
+        public Dictionary<string, Flight> flights { get; set; } = new Dictionary<string, Flight>();
+        public Dictionary<string, BoardingGate> boardingGates { get; set; } = new Dictionary<string, BoardingGate>();
+        public Dictionary<string, double> gateFees { get; set; } = new Dictionary<string, double>();
         public Terminal() { }
         public Terminal(string tn)
         {

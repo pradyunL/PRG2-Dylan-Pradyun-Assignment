@@ -7,7 +7,7 @@
 
 namespace Classes
 {
-    abstract class Flight
+    abstract class Flight : IComparable<Flight>
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -29,11 +29,11 @@ namespace Classes
             double TotalFee = 0;
             if (Destination == "SIN")
             {
-                TotalFee += 500;
+                TotalFee = BaseFee;
             }
             if (Origin == "SIN")
             {
-                TotalFee += 800;
+                TotalFee = BaseFee;
             }
             return TotalFee;
         }
@@ -43,5 +43,11 @@ namespace Classes
                 "Expected Time: " + ExpectedTime + "\n" +
                 "Status: " + Status;
         }
+
+        public int CompareTo(Flight other)
+        {
+            return this.ExpectedTime.CompareTo(other.ExpectedTime);
+        }
     }
 }
+
