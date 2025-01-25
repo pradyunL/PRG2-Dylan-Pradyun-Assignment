@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Classes;
 using System.IO;
+using Classes;
 
 Dictionary<string, Airline> airlineDict = new Dictionary<string, Airline>();
 Dictionary<string, BoardingGate> boardingGateDict = new Dictionary<string, BoardingGate>();
@@ -16,7 +16,8 @@ Dictionary<string, Flight> flightDict = new Dictionary<string, Flight>();
 // Partner Name	: Dylan Loh
 //==========================================================
 
-// feature 1
+// FEATURE 1
+
 // loads up airlines.csv into a dictionary
 void ReadAirlineFile(string filepath)
 {
@@ -63,7 +64,7 @@ ReadBoardingGateFile("boardinggates.csv");
 // Partner Name	: Pradyun
 //==========================================================
 
-// feature 2
+// FEATURE 2
 void readFlight(string filepath)
 {
     string[] lines = File.ReadAllLines(filepath);
@@ -99,7 +100,8 @@ void readFlight(string filepath)
     }
 }
 
-// feature 3
+// FEATURE 3
+
 void listAllFlights()
 {
     Console.WriteLine("Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time");
@@ -118,5 +120,13 @@ void listAllFlights()
 // Partner Name	: Dylan Loh
 //==========================================================
 
-// feature 4
+// FEATURE 4
 
+void listAllBoardingGates()
+{
+    Console.WriteLine("Gate Name   Supports CFFT   Supports DDJB   Supports LWTT");
+    foreach (var boardingGate in boardingGateDict.Values)
+    {
+        Console.WriteLine($"{boardingGate.gateName,-12} {boardingGate.supportsCFFT,-15} {boardingGate.supportsDDJB,-15} {boardingGate.supportsLWTT,-15}");
+    }
+}
