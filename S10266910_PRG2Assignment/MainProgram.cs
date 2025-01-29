@@ -110,6 +110,12 @@ void ReadFlightFile(string filepath)
 }
 ReadFlightFile("flights.csv");
 
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
 // FEATURE 3
 
 void listAllFlights()
@@ -157,27 +163,27 @@ void AssigningBoardingGateToFlight()
     Console.WriteLine("Enter Flight Number:");
     string flightNumber = Console.ReadLine();
 
-    if (!flightDict.ContainsKey(flightNumber))
+    if (!terminal.flights.ContainsKey(flightNumber))
     {
         Console.WriteLine("Flight not found.");
         return;
     }
 
-    Flight flight = flightDict[flightNumber];
+    Flight flight = terminal.flights[flightNumber];
     Console.WriteLine("Enter Boarding Gate Name:");
     string? gateName = Console.ReadLine().ToUpper();
 
     while (true)
     {
 
-        if (!boardingGateDict.ContainsKey(gateName))
+        if (!terminal.boardingGates.ContainsKey(gateName))
         {
             Console.WriteLine("Boarding Gate not found. Please enter a valid gate:");
             gateName = Console.ReadLine();
             continue;
         }
 
-        BoardingGate gate = boardingGateDict[gateName];
+        BoardingGate gate = terminal.boardingGates[gateName];
 
         if (gate.flight != null)
         {
@@ -251,6 +257,12 @@ void AssigningBoardingGateToFlight()
     }
 }
 
+//==========================================================
+// Student Number	: S10267635J
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
 // FEATURE 6
 void CreateNewFlight()
 {
@@ -282,7 +294,7 @@ void CreateNewFlight()
     {
         flight = new NORMFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
     }
-    flightDict.Add(flightNumber, flight);
+    terminal.flights.Add(flightNumber, flight);
 
 
     using (StreamWriter sw = File.AppendText("flights.csv"))
