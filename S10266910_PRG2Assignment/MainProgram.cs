@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Classes;
 
-Dictionary<string, Airline> airlineDict = new Dictionary<string, Airline>();
-Dictionary<string, BoardingGate> boardingGateDict = new Dictionary<string, BoardingGate>();
-Dictionary<string, Flight> flightDict = new Dictionary<string, Flight>();
 
 //==========================================================
 // Student Number	: S10266910B
@@ -19,7 +16,9 @@ Dictionary<string, Flight> flightDict = new Dictionary<string, Flight>();
 // FEATURE 1
 
 // loads up airlines.csv into a dictionary
-void ReadAirlineFile(string filepath)
+
+Terminal terminal = new Terminal("Terminal 5");
+void ReadAirlineFile(string filepath, Terminal terminal)
 {
     string[] lines = File.ReadAllLines(filepath);
     for (int i = 1; i < lines.Length; i++)
@@ -31,14 +30,14 @@ void ReadAirlineFile(string filepath)
         string airlineCode = details[1];
 
         Airline airline = new Airline(airlineName, airlineCode);
-        airlineDict.Add(airlineName, airline);
+        terminal.AddAirline(airline);
     }
 }
-ReadAirlineFile("airlines.csv");
+ReadAirlineFile("airlines.csv", terminal);
 
 
 // loads up boardinggates.csv into a dictionary
-void ReadBoardingGateFile(string filepath)
+void ReadBoardingGateFile(string filepath, Terminal terminal)
 {
     string[] lines = File.ReadAllLines(filepath);
     for (int i = 1; i < lines.Length; i++)
@@ -52,10 +51,10 @@ void ReadBoardingGateFile(string filepath)
         bool supportsLWTT = bool.Parse(details[3]);
 
         BoardingGate boardingGate = new BoardingGate(gateName, supportsCFFT, supportsDDJB, supportsLWTT);
-        boardingGateDict.Add(gateName, boardingGate);
+        terminal.AddBoardingGate(boardingGate);
     }
 }
-ReadBoardingGateFile("boardinggates.csv");
+ReadBoardingGateFile("boardinggates.csv",terminal);
 
 
 //==========================================================
@@ -65,19 +64,21 @@ ReadBoardingGateFile("boardinggates.csv");
 //==========================================================
 
 // FEATURE 2
-void readFlight(string filepath)
+void ReadFlightFile(string filepath)
 {
     string[] lines = File.ReadAllLines(filepath);
     for (int i = 1; i < lines.Length; i++)
     {
         string line = lines[i];
         string[] data = line.Split(',');
+
         string flightNumber = data[0];
         string origin = data[1];
         string destination = data[2];
         DateTime expectedTime = DateTime.Parse(data[3]);
         string status = data[4];
         Flight flight;
+
         if (status == "DDJB")
         {
             flight = new DDJBFlight(flightNumber, origin, destination, expectedTime, status);
@@ -94,25 +95,35 @@ void readFlight(string filepath)
         {
             flight = new NORMFlight(flightNumber, origin, destination, expectedTime, status);
         }
-        flightDict.Add(flightNumber, flight);
-
-        readFlight("flights.csv");
+        Airline airline = terminal.GetAirlineFromFlight(flight);
+        string airlineName = airline.Code;
+        if (airline != null && terminal.airlines.ContainsKey(airline.Code))
+        {
+            terminal.airlines[airline.Code].AddFlight(flight); // add flights to AIRLINE class flight dictionary
+            terminal.flights[flight.FlightNumber] = flight; // add flights to TERMINAL class flight dictionary
+        }
+        else
+        {
+            Console.WriteLine($"Warning: No airline found for flight {flightNumber}");
+        }
     }
 }
+ReadFlightFile("flights.csv");
 
 // FEATURE 3
 
 void listAllFlights()
 {
     Console.WriteLine("Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time");
-    foreach (var airline in airlineDict.Values)
+    foreach (var airline in terminal.airlines.Values)
     {
-        foreach (var flight in flightDict.Values)
+        foreach (var flight in terminal.flights.Values)
         {
             Console.WriteLine($"{flight.FlightNumber,-15} {airline.Name,-22} {flight.Origin,-22} {flight.Destination,-22} {flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
         }
     }
 }
+listAllFlights();
 
 //==========================================================
 // Student Number	: S10266910B
@@ -125,8 +136,23 @@ void listAllFlights()
 void listAllBoardingGates()
 {
     Console.WriteLine("Gate Name   Supports CFFT   Supports DDJB   Supports LWTT");
-    foreach (var boardingGate in boardingGateDict.Values)
+    foreach (var boardingGate in terminal.boardingGates.Values)
     {
         Console.WriteLine($"{boardingGate.gateName,-12} {boardingGate.supportsCFFT,-15} {boardingGate.supportsDDJB,-15} {boardingGate.supportsLWTT,-15}");
     }
 }
+
+// FEATURE 7
+
+void listFullFlightDetails() 
+{
+    foreach (var airline in terminal.airlines.Values)
+    {
+        Console.WriteLine(airline);
+    }
+    Console.Write("Enter Two Letter Airline Code(e.g. SQ, etc.): ");
+    string airlineCode = Console.ReadLine();
+
+
+}
+listFullFlightDetails();

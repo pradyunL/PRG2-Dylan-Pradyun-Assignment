@@ -69,10 +69,7 @@ namespace Classes
         }
         public override string ToString()
         {
-            string s = "Airline: " + Name + " (" + Code + ")\n";
-            foreach (KeyValuePair<string, Flight> f in Flights)
-                s += f.Value.ToString() + "\n";
-            return s;
+            return "Airline: (" + Code + "), " + Name;
         }
     }
 }
