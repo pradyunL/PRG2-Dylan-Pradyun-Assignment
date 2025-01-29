@@ -159,21 +159,21 @@ void AssigningBoardingGateToFlight()
     Console.WriteLine("=============================================");
     Console.WriteLine("Assign a Boarding Gate to a Flight");
     Console.WriteLine("=============================================");
-    Console.WriteLine("Enter Flight Number:");
-    string flightNumber = Console.ReadLine();
-
-    if (!terminal.flights.ContainsKey(flightNumber))
-    {
-        Console.WriteLine("Flight not found.");
-        return;
-    }
-
-    Flight flight = terminal.flights[flightNumber];
-    Console.WriteLine("Enter Boarding Gate Name:");
-    string? gateName = Console.ReadLine().ToUpper();
 
     while (true)
     {
+        Console.WriteLine("Enter Flight Number:");
+        string flightNumber = formatFlightNumber(Console.ReadLine());
+
+        if (!terminal.flights.ContainsKey(flightNumber))
+        {
+            Console.WriteLine("Flight not found.");
+            continue;
+        }
+
+        Flight flight = terminal.flights[flightNumber];
+        Console.WriteLine("Enter Boarding Gate Name:");
+        string? gateName = Console.ReadLine().ToUpper();
 
         if (!terminal.boardingGates.ContainsKey(gateName))
         {
@@ -209,6 +209,7 @@ void AssigningBoardingGateToFlight()
         }
 
         gate.flight = flight;
+
         Console.WriteLine($"Flight Number: {flight.FlightNumber}");
         Console.WriteLine($"Origin: {flight.Origin}");
         Console.WriteLine($"Destination: {flight.Destination}");
@@ -233,17 +234,14 @@ void AssigningBoardingGateToFlight()
             if (statusOption == 1)
             {
                 flight.Status = "Delayed";
-                break;
             }
             else if (statusOption == 2)
             {
                 flight.Status = "Boarding";
-                break;
             }
             else if (statusOption == 3)
             {
                 flight.Status = "On Time";
-                break;
             }
         }
         else
@@ -251,7 +249,7 @@ void AssigningBoardingGateToFlight()
             flight.Status = "On Time";
         }
 
-        Console.WriteLine($"Flight {flight.FlightNumber} has been assigned to Boarding Gate {gate.gateName}!");
+        Console.WriteLine($"{flight.Status} Flight {flight.FlightNumber} has been assigned to Boarding Gate {gate.gateName}!");
         break;
     }
 }
@@ -327,16 +325,26 @@ void listFullFlightDetails()
     airlineListing();
     while (true)
     {
-        Console.Write("Enter Flight Number(e.g. SQ 123, etc.): ");
+        Console.Write("Enter Flight Number(e.g. sq123, etc.): ");
         string flightNumber = formatFlightNumber(Console.ReadLine());
         if (terminal.flights.ContainsKey(flightNumber))
         {
             Flight chosenFlight = terminal.flights[flightNumber];
             Airline chosenAirline = terminal.GetAirlineFromFlight(chosenFlight);
 
+            string assignedGateName = "Not assigned";
+            foreach (var gate in terminal.boardingGates.Values)
+            {
+                if (gate.flight != null && gate.flight.FlightNumber == flightNumber)
+                {
+                    assignedGateName = gate.gateName;
+                    break;
+                }
+            }
+
             Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
                 $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {termi}");
+                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {assignedGateName}");
             break;
         }
         else
@@ -348,7 +356,7 @@ void listFullFlightDetails()
 }
 listFullFlightDetails();
 
-string formatFlightNumber(string input) // function to format flight number justt in case enters something like sq123, this makes it sq 123
+string formatFlightNumber(string input) // function to format flight number justt in case enters something like sq123, this makes it SQ 123
 {
     string cleaned = input.Replace(" ", "").ToUpper();
     if (cleaned.Length >= 2)
