@@ -14,7 +14,7 @@ namespace Classes
     class Terminal
     {
         public string terminalName { get; set; }
-        public Dictionary<string, Airline> airlines { get; set; }
+        public Dictionary<string, Airline> airlines { get; set; } = new Dictionary<string, Airline>();
         public Dictionary<string, Flight> flights { get; set; } = new Dictionary<string, Flight>();
         public Dictionary<string, BoardingGate> boardingGates { get; set; } = new Dictionary<string, BoardingGate>();
         public Dictionary<string, double> gateFees { get; set; } = new Dictionary<string, double>();
@@ -22,10 +22,6 @@ namespace Classes
         public Terminal(string tn)
         {
             terminalName = tn;
-            airlines = new Dictionary<string, Airline>();
-            flights = new Dictionary<string, Flight>();
-            boardingGates = new Dictionary<string, BoardingGate>();
-            gateFees = new Dictionary<string, double>();
         }
         public bool AddAirline(Airline airline)
         {
@@ -47,12 +43,12 @@ namespace Classes
 
         public Airline GetAirlineFromFlight(Flight flight)
         {
-            foreach (var airline in airlines.Values)
+            string[] parts = flight.FlightNumber.Split(' ');
+            string airlineCode = parts[0];
+
+            if (airlines.TryGetValue(airlineCode, out Airline airline))
             {
-                if (airline.Flights.ContainsKey(flight.FlightNumber))
-                {
-                    return airline;
-                }
+                return airline;
             }
             return null;
         }
