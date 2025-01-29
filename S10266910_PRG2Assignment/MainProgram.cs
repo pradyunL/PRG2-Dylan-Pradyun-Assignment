@@ -129,7 +129,6 @@ void listAllFlights()
         }
     }
 }
-listAllFlights();
 
 //==========================================================
 // Student Number	: S10266910B
@@ -311,55 +310,90 @@ void CreateNewFlight()
     }
     else
     {
-        displayMenu();
+        //displayMenu();
     }
 }
 
-
+//==========================================================
+// Student Number	: S10266910B
+// Student Name	: Pradyun
+// Partner Name	: Dylan Loh
+//==========================================================
 
 // FEATURE 7
 
 void listFullFlightDetails()
 {
-    airlineListing();  // made listing of all airlines and flights of it into a function to increase reusability
-    Console.Write("Enter Flight Number(e.g. SQ 123): ");
-    string flightNumber = Console.ReadLine();
-    if (terminal.flights.ContainsKey(flightNumber))
+    airlineListing();
+    while (true)
     {
-        Flight chosenFlight = terminal.flights[flightNumber];
-        Airline chosenAirline = terminal.GetAirlineFromFlight(chosenFlight);
-
-        Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} \nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} \nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {}");
-
-    }
-    else
-    {
-        Console.WriteLine("Flight not found.");
-    }
-
-}
-listFullFlightDetails();
-
-void airlineListing()
-{
-    foreach (var airline in terminal.airlines.Values)
-    {
-        Console.WriteLine(airline);
-    }
-    Console.Write("Enter Two Letter Airline Code(e.g. SQ, etc.): ");
-    string airlineCode = Console.ReadLine();
-    if (terminal.airlines.ContainsKey(airlineCode))
-    {
-        Airline chosenAirline = terminal.airlines[airlineCode];
-        foreach (var flight in chosenAirline.Flights.Values)
+        Console.Write("Enter Flight Number(e.g. SQ 123, etc.): ");
+        string flightNumber = formatFlightNumber(Console.ReadLine());
+        if (terminal.flights.ContainsKey(flightNumber))
         {
-            Console.WriteLine($"\nFlight Number: {flight.FlightNumber} \nOrigin: {flight.Origin} \nDestination: {flight.Destination}");
+            Flight chosenFlight = terminal.flights[flightNumber];
+            Airline chosenAirline = terminal.GetAirlineFromFlight(chosenFlight);
+
+            Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
+                $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
+                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {termi}");
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Flight not found. Make sure to enter in a valid flight number that was displayed earlier.");
+            continue;
         }
     }
-    else
-    {
-        Console.WriteLine("Airline not found.");
-    }
-
 }
 listFullFlightDetails();
+
+string formatFlightNumber(string input) // function to format flight number justt in case enters something like sq123, this makes it sq 123
+{
+    string cleaned = input.Replace(" ", "").ToUpper();
+    if (cleaned.Length >= 2)
+    {
+        return $"{cleaned.Substring(0, 2)} {cleaned.Substring(2)}";
+    }
+    return input;
+}
+
+void airlineListing() // made listing of all airlines and flights of it into a function to increase reusability for next feature 8
+{
+    while (true){
+        foreach (var airline in terminal.airlines.Values)
+        {
+            Console.WriteLine(airline);
+        }
+        Console.Write("Enter Two Letter Airline Code(e.g. SQ, etc.): ");
+        string airlineCode = Console.ReadLine().ToUpper();
+        if (terminal.airlines.ContainsKey(airlineCode))
+        {
+            Airline chosenAirline = terminal.airlines[airlineCode];
+            foreach (var flight in chosenAirline.Flights.Values)
+            {
+                Console.WriteLine($"\nFlight Number: {flight.FlightNumber} \nOrigin: {flight.Origin} \nDestination: {flight.Destination}");
+            }
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Airline not found.");
+            continue;
+        }
+    }
+}
+
+//==========================================================
+// Student Number	: S10266910B
+// Student Name	: Pradyun
+// Partner Name	: Dylan Loh
+//==========================================================
+
+// FEATURE 8
+
+void modifyFlightDetails()
+{
+    airlineListing();
+
+}
