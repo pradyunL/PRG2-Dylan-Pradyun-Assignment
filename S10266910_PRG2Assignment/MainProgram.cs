@@ -319,7 +319,28 @@ void CreateNewFlight()
 
 // FEATURE 7
 
-void listFullFlightDetails() 
+void listFullFlightDetails()
+{
+    airlineListing();  // made listing of all airlines and flights of it into a function to increase reusability
+    Console.Write("Enter Flight Number(e.g. SQ 123): ");
+    string flightNumber = Console.ReadLine();
+    if (terminal.flights.ContainsKey(flightNumber))
+    {
+        Flight chosenFlight = terminal.flights[flightNumber];
+        Airline chosenAirline = terminal.GetAirlineFromFlight(chosenFlight);
+
+        Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} \nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} \nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {}");
+
+    }
+    else
+    {
+        Console.WriteLine("Flight not found.");
+    }
+
+}
+listFullFlightDetails();
+
+void airlineListing()
 {
     foreach (var airline in terminal.airlines.Values)
     {
@@ -327,7 +348,18 @@ void listFullFlightDetails()
     }
     Console.Write("Enter Two Letter Airline Code(e.g. SQ, etc.): ");
     string airlineCode = Console.ReadLine();
-
+    if (terminal.airlines.ContainsKey(airlineCode))
+    {
+        Airline chosenAirline = terminal.airlines[airlineCode];
+        foreach (var flight in chosenAirline.Flights.Values)
+        {
+            Console.WriteLine($"\nFlight Number: {flight.FlightNumber} \nOrigin: {flight.Origin} \nDestination: {flight.Destination}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Airline not found.");
+    }
 
 }
 listFullFlightDetails();
