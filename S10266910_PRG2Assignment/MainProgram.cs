@@ -191,8 +191,6 @@ void AssigningBoardingGateToFlight()
             continue;
         }
 
-        terminal.boardingGates.Add(gate.gateName, gate);
-
 
         string SpecialRequestCode = flight.GetType().Name;
         if (SpecialRequestCode == "NORMFlight")
