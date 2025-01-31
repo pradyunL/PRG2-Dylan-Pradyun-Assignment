@@ -376,19 +376,6 @@ void flightChoice()
     }
 }
 void airlineChoice() // made listing of all airlines and flights of it into a function to increase reusability for next feature 8
-//listFullFlightDetails();
-
-string formatFlightNumber(string input) // function to format flight number justt in case enters something like sq123, this makes it SQ 123
-{
-    string cleaned = input.Replace(" ", "").ToUpper();
-    if (cleaned.Length >= 2)
-    {
-        return $"{cleaned.Substring(0, 2)} {cleaned.Substring(2)}";
-    }
-    return input;
-}
-
-void airlineListing() // made listing of all airlines and flights of it into a function to increase reusability for next feature 8
 {
     while (true){
         foreach (var airline in terminal.airlines.Values)
