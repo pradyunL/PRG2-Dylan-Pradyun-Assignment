@@ -35,9 +35,13 @@ namespace Classes
         public bool AddBoardingGate(BoardingGate gate)
         {
             if (boardingGates.ContainsKey(gate.gateName))
+            {
+                Console.WriteLine($"Boarding gate {gate.gateName} already exists.");
                 return false;
+            }
 
             boardingGates.Add(gate.gateName, gate);
+            Console.WriteLine($"Boarding gate {gate.gateName} added successfully.");
             return true;
         }
 

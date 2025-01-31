@@ -36,3 +36,18 @@ C:\Users\prady\dev\PRG_Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\refi
 C:\Users\prady\dev\PRG_Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.pdb
 C:\Users\prady\dev\PRG_Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.genruntimeconfig.cache
 C:\Users\prady\dev\PRG_Assignment\S10266910_PRG2Assignment\obj\Debug\net8.0\ref\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\bin\Debug\net8.0\S10266910_PRG2Assignment.exe
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\bin\Debug\net8.0\S10266910_PRG2Assignment.deps.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\bin\Debug\net8.0\S10266910_PRG2Assignment.runtimeconfig.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\bin\Debug\net8.0\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\bin\Debug\net8.0\S10266910_PRG2Assignment.pdb
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.AssemblyInfoInputs.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.AssemblyInfo.cs
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.csproj.CoreCompileInputs.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.sourcelink.json
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\refint\S10266910_PRG2Assignment.dll
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.pdb
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\S10266910_PRG2Assignment.genruntimeconfig.cache
+C:\Users\lowmy\OneDrive - Ngee Ann Polytechnic\PRG2\ASSG2\S10266910_PRG2Assignment\obj\Debug\net8.0\ref\S10266910_PRG2Assignment.dll
