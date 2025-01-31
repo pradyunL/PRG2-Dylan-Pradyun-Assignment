@@ -46,11 +46,11 @@ void ReadBoardingGateFile(string filepath, Terminal terminal)
         string[] details = line.Split(',');
 
         string gateName = details[0];
-        bool supportsCFFT = bool.Parse(details[1]);
-        bool supportsDDJB = bool.Parse(details[2]);
+        bool supportsDDJB = bool.Parse(details[1]);
+        bool supportsCFFT = bool.Parse(details[2]);
         bool supportsLWTT = bool.Parse(details[3]);
 
-        BoardingGate boardingGate = new BoardingGate(gateName, supportsCFFT, supportsDDJB, supportsLWTT);
+        BoardingGate boardingGate = new BoardingGate(gateName,supportsDDJB, supportsCFFT, supportsLWTT);
         terminal.AddBoardingGate(boardingGate);
     }
 }
@@ -347,10 +347,23 @@ void flightChoice()
                     break;
                 }
             }
+            string flightSPC = "NORM";
+            if (chosenFlight is CFFTFlight)
+            {
+                flightSPC = "CFFT";
+            }
+            else if (chosenFlight is DDJBFlight)
+            {
+                flightSPC = "DDJB";
+            }
+            else if (chosenFlight is LWTTFlight)
+            {
+                flightSPC = "LWTT";
+            }
 
             Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
                 $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {assignedGateName}");
+                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {flightSPC} \nBoarding Gate: {assignedGateName}");
             break;
         }
         else
@@ -401,8 +414,7 @@ string formatFlightNumber(string input) // function to format flight number just
 // Partner Name	: Dylan Loh
 //==========================================================
 
-// FEATURE 8  - the special request code cannot be successfully changed and displayed
-//              i think the thing is updated but it is not displayed properly
+// FEATURE 8 
 
 void modifyFlightDetails()
 {
@@ -630,4 +642,148 @@ void modifyFlightDetails()
         }
     }
 }
-modifyFlightDetails();
+
+//==========================================================
+// Student Number	: S10266910B
+// Student Name	: Pradyun
+// Partner Name	: Dylan Loh
+//==========================================================
+
+// Advanced Feature (a)
+
+void BulkAssignFlightsToGates()
+{
+    Queue<Flight> unassignedFlights = new Queue<Flight>();
+    int totalUnassignedFlights = 0;
+    int totalUnassignedGates = 0;
+
+    foreach (var flight in terminal.flights.Values)
+    {
+        bool isAssigned = false;
+        foreach (var gate in terminal.boardingGates.Values)
+        {
+            if (gate.flight?.FlightNumber == flight.FlightNumber)
+            {
+                isAssigned = true;
+                break;
+            }
+        }
+        if (!isAssigned)
+        {
+            unassignedFlights.Enqueue(flight);
+            totalUnassignedFlights++;
+        }
+    }
+
+    foreach (var gate in terminal.boardingGates.Values)
+    {
+        if (gate.flight == null)
+        {
+            totalUnassignedGates++;
+        }
+    }
+
+    Console.WriteLine($"Unassigned Flights: {totalUnassignedFlights}");
+    Console.WriteLine($"Unassigned Gates: {totalUnassignedGates}");
+
+    int autoAssignedFlights = 0;
+    int autoAssignedGates = 0;
+
+    while (unassignedFlights.Count > 0)
+    {
+        Flight currentFlight = unassignedFlights.Dequeue();
+        BoardingGate suitableGate = null;
+
+        bool hasSpecialRequest = currentFlight is CFFTFlight || currentFlight is DDJBFlight || currentFlight is LWTTFlight;
+
+        foreach (var gate in terminal.boardingGates.Values)
+        {
+            if (gate.flight != null) //this checks if gate is unassigned and won't progress to the rest of the code until it finds unassigned
+            {
+                continue;
+            }
+            if (hasSpecialRequest)
+            {
+                if (currentFlight is CFFTFlight && gate.supportsCFFT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else if (currentFlight is DDJBFlight && gate.supportsDDJB)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else if (currentFlight is LWTTFlight && gate.supportsLWTT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (!gate.supportsCFFT && !gate.supportsDDJB && !gate.supportsLWTT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        if (suitableGate != null)
+        {
+            suitableGate.flight = currentFlight;
+            autoAssignedFlights++;
+            autoAssignedGates++;
+
+            string specialCode = "None";
+            if (currentFlight is CFFTFlight) { specialCode = "CFFT"; }
+            else if (currentFlight is DDJBFlight) { specialCode = "DDJB"; }
+            else if (currentFlight is LWTTFlight) { specialCode = "LWTT"; }
+
+            while (true)
+            {
+                Airline chosenAirline = terminal.GetAirlineFromFlight(currentFlight);
+                string flightNumber = currentFlight.FlightNumber;
+                string assignedGateName = "Unassigned";
+                foreach (var gate in terminal.boardingGates.Values)
+                {
+                    if (gate.flight != null && gate.flight.FlightNumber == flightNumber)
+                    {
+                        assignedGateName = gate.gateName;
+                        break;
+                    }
+                }
+
+                Console.WriteLine($"\nFlight Number: {currentFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
+                    $"\nOrigin: {currentFlight.Origin} \nDestination: {currentFlight.Destination} " +
+                    $"\nExpected Time: {currentFlight.ExpectedTime} \nSpecial Request Code: {specialCode} \nBoarding Gate: {assignedGateName}");
+                break;
+            }
+        }
+    }
+
+    int totalFlights = terminal.flights.Count;
+    int totalGates = terminal.boardingGates.Count;
+
+    Console.WriteLine($"\nProcessed Results:");
+    Console.WriteLine($"Assigned Flights: {autoAssignedFlights}/{totalUnassignedFlights}");
+    Console.WriteLine($"Assigned Gates: {autoAssignedGates}/{totalUnassignedGates}");
+
+    double flightPercentage = totalUnassignedFlights > 0 ?
+        (autoAssignedFlights * 100.0) / totalUnassignedFlights : 0;
+    double gatePercentage = totalUnassignedGates > 0 ?
+        (autoAssignedGates * 100.0) / totalUnassignedGates : 0;
+
+    Console.WriteLine($"Automatically Assigned: {flightPercentage:F2}% of flights, " +
+                    $"{gatePercentage:F2}% of gates");
+}
+BulkAssignFlightsToGates();

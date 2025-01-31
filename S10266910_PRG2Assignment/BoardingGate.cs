@@ -24,7 +24,7 @@ namespace Classes
         public bool supportsLWTT { get; set; }
         public Flight flight { get; set; }
         public BoardingGate() { }
-        public BoardingGate(string GN, bool CFFT, bool DDJB, bool LWTT)
+        public BoardingGate(string GN, bool DDJB, bool CFFT, bool LWTT)
         {
             gateName = GN;
             supportsCFFT = CFFT;
