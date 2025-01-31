@@ -46,11 +46,11 @@ void ReadBoardingGateFile(string filepath, Terminal terminal)
         string[] details = line.Split(',');
 
         string gateName = details[0];
-        bool supportsCFFT = bool.Parse(details[1]);
-        bool supportsDDJB = bool.Parse(details[2]);
+        bool supportsDDJB = bool.Parse(details[1]);
+        bool supportsCFFT = bool.Parse(details[2]);
         bool supportsLWTT = bool.Parse(details[3]);
 
-        BoardingGate boardingGate = new BoardingGate(gateName, supportsCFFT, supportsDDJB, supportsLWTT);
+        BoardingGate boardingGate = new BoardingGate(gateName,supportsDDJB, supportsCFFT, supportsLWTT);
         terminal.AddBoardingGate(boardingGate);
     }
 }
@@ -311,7 +311,7 @@ void CreateNewFlight()
     }
     else
     {
-        //displayMenu();
+        displayMenu();
     }
 }
 
@@ -349,10 +349,23 @@ void flightChoice()
                     break;
                 }
             }
+            string flightSPC = "NORM";
+            if (chosenFlight is CFFTFlight)
+            {
+                flightSPC = "CFFT";
+            }
+            else if (chosenFlight is DDJBFlight)
+            {
+                flightSPC = "DDJB";
+            }
+            else if (chosenFlight is LWTTFlight)
+            {
+                flightSPC = "LWTT";
+            }
 
             Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
                 $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {chosenFlight.Status} \nBoarding Gate: {assignedGateName}");
+                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {flightSPC} \nBoarding Gate: {assignedGateName}");
             break;
         }
         else
@@ -416,8 +429,7 @@ string formatFlightNumber(string input) // function to format flight number just
 // Partner Name	: Dylan Loh
 //==========================================================
 
-// FEATURE 8  - the special request code cannot be successfully changed and displayed
-//              i think the thing is updated but it is not displayed properly
+// FEATURE 8 
 
 void modifyFlightDetails()
 {
@@ -684,207 +696,349 @@ void DisplayFlightSchedule()
             }
         }
     }
+}
+//==========================================================
+// Student Number	: S10266910B
+// Student Name	: Pradyun
+// Partner Name	: Dylan Loh
+//==========================================================
 
-    //==========================================================
-    // Student Number	: S10266910B
-    // Student Name	: Dylan Loh
-    // Partner Name	: Pradyun
-    //==========================================================
+// Advanced Feature (a)
 
-    // ADVANCED FEATURE (b)
-    void DisplayTotalFeePerAirline()
+void BulkAssignFlightsToGates()
+{
+    Queue<Flight> unassignedFlights = new Queue<Flight>();
+    int totalUnassignedFlights = 0;
+    int totalUnassignedGates = 0;
+
+    foreach (var flight in terminal.flights.Values)
     {
-        // Check if all flights have been assigned boarding gates
-        foreach (var flight in terminal.flights.Values)
+        bool isAssigned = false;
+        foreach (var gate in terminal.boardingGates.Values)
         {
-            bool gateAssigned = terminal.boardingGates.Values.Any(g => g.flight?.FlightNumber == flight.FlightNumber);
-            if (!gateAssigned)
+            if (gate.flight?.FlightNumber == flight.FlightNumber)
             {
-                Console.WriteLine($"Flight {flight.FlightNumber} has not been assigned a boarding gate. Please assign all flights before running this feature.");
-                return;
+                isAssigned = true;
+                break;
             }
         }
-
-        double totalFees = 0;
-        double totalDiscounts = 0;
-
-        Console.WriteLine("Airline Fees for the Day:");
-        foreach (var airline in terminal.airlines.Values)
+        if (!isAssigned)
         {
-            double airlineFees = 0;
-            double airlineDiscounts = 0;
-            int flightCount = airline.Flights.Count;
-            int earlyLateFlightCount = 0;
-            int specificOriginCount = 0;
-            int noSpecialRequestCount = 0;
-
-            foreach (var flight in airline.Flights.Values)
-            {
-                // Calculate base fees
-                if (flight.Origin == "SIN")
-                {
-                    airlineFees += 800;
-                }
-                if (flight.Destination == "SIN")
-                {
-                    airlineFees += 500;
-                }
-
-                // Add boarding gate base fee
-                airlineFees += 300;
-
-                // Add special request fees
-                if (flight is DDJBFlight)
-                {
-                    airlineFees += 300;
-                }
-                else if (flight is CFFTFlight)
-                {
-                    airlineFees += 150;
-                }
-                else if (flight is LWTTFlight)
-                {
-                    airlineFees += 500;
-                }
-
-                // Check for early or late flights
-                if (flight.ExpectedTime.ToString("hh tt") == "11 AM" || flight.ExpectedTime.ToString("hh tt") == "09 PM")
-                {
-                    earlyLateFlightCount++;
-                }
-
-                // Check for specific origins
-                if (flight.Origin == "DXB" || flight.Origin == "BKK" || flight.Origin == "NRT")
-                {
-                    specificOriginCount++;
-                }
-
-                // Check for special request codes
-                if (!(flight is DDJBFlight) && !(flight is CFFTFlight) && !(flight is LWTTFlight))
-                {
-                    noSpecialRequestCount++;
-                }
-            }
-
-            // Apply discounts
-            airlineDiscounts += (flightCount / 3) * 350;
-            airlineDiscounts += earlyLateFlightCount * 110;
-            airlineDiscounts += specificOriginCount * 25;
-            airlineDiscounts += noSpecialRequestCount * 50;
-
-            if (flightCount > 5)
-            {
-                airlineDiscounts += airlineFees * 0.03;
-            }
-
-            double finalFees = airlineFees - airlineDiscounts;
-            totalFees += airlineFees;
-            totalDiscounts += airlineDiscounts;
-
-            Console.WriteLine($"Airline: {airline.Name}");
-            Console.WriteLine($"Original Subtotal: {airlineFees:C}");
-            Console.WriteLine($"Discounts: {airlineDiscounts:C}");
-            Console.WriteLine($"Final Total: {finalFees:C}");
-            Console.WriteLine();
+            unassignedFlights.Enqueue(flight);
+            totalUnassignedFlights++;
         }
-
-        double finalTotalFees = totalFees - totalDiscounts;
-        double discountPercentage = (totalDiscounts / totalFees) * 100;
-
-        Console.WriteLine("Summary:");
-        Console.WriteLine($"Subtotal of All Airline Fees: {totalFees:C}");
-        Console.WriteLine($"Subtotal of All Airline Discounts: {totalDiscounts:C}");
-        Console.WriteLine($"Final Total of Airline Fees Collected: {finalTotalFees:C}");
-        Console.WriteLine($"Percentage of Discounts Over Final Total: {discountPercentage:F2}%");
     }
 
-
-
-    //==========================================================
-    //DISPLAY MENU
-    //==========================================================
-    void displayMenu()
+    foreach (var gate in terminal.boardingGates.Values)
     {
-
-        DisplayTotalFeePerAirline();
-
-        Console.WriteLine("\nLoading Airlines...\r\n" +
-        "8 Airlines Loaded!\r\nLoading Boarding Gates...\r\n" +
-        "66 Boarding Gates Loaded!\r\n" +
-        "Loading Flights...\r\n" +
-        "30 Flights Loaded!\r\n\n\n\n");
-
-        Console.WriteLine(
-            "=============================================\r\n" +
-            "Welcome to Changi Airport Terminal 5\r\n" +
-            "=============================================\r\n" +
-            "1. List All Flights\r\n" +
-            "2. List Boarding Gates\r\n" +
-            "3. Assign a Boarding Gate to a Flight\r\n" +
-            "4. Create Flight\r\n" +
-            "5. Display Airline Flights\r\n" +
-            "6. Modify Flight Details\r\n" +
-            "7. Display Flight Schedule\r\n" +
-            "0. Exit\r\n");
-
-        Options();
-    }
-
-    displayMenu();
-    void Options()
-    {
-        try
+        if (gate.flight == null)
         {
-            Console.WriteLine("Please select your option:");
-            int option = Convert.ToInt32(Console.ReadLine());
+            totalUnassignedGates++;
+        }
+    }
 
-            if (option == 1)
+    Console.WriteLine($"Unassigned Flights: {totalUnassignedFlights}");
+    Console.WriteLine($"Unassigned Gates: {totalUnassignedGates}");
+
+    int autoAssignedFlights = 0;
+    int autoAssignedGates = 0;
+
+    while (unassignedFlights.Count > 0)
+    {
+        Flight currentFlight = unassignedFlights.Dequeue();
+        BoardingGate suitableGate = null;
+
+        bool hasSpecialRequest = currentFlight is CFFTFlight || currentFlight is DDJBFlight || currentFlight is LWTTFlight;
+
+        foreach (var gate in terminal.boardingGates.Values)
+        {
+            if (gate.flight != null) //this checks if gate is unassigned and won't progress to the rest of the code until it finds unassigned
             {
-                listAllFlights();
+                continue;
             }
-            else if (option == 2)
+            if (hasSpecialRequest)
             {
-                listAllBoardingGates();
-            }
-            else if (option == 3)
-            {
-                AssigningBoardingGateToFlight();
-            }
-            else if (option == 4)
-            {
-                CreateNewFlight();
-            }
-            else if (option == 5)
-            {
-                displayAirlineFlights();
-            }
-            else if (option == 6)
-            {
-                modifyFlightDetails();
-            }
-            else if (option == 7)
-            {
-                DisplayFlightSchedule();
-            }
-            else if (option == 0)
-            {
-                Console.WriteLine("Goodbye!");
+                if (currentFlight is CFFTFlight && gate.supportsCFFT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else if (currentFlight is DDJBFlight && gate.supportsDDJB)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else if (currentFlight is LWTTFlight && gate.supportsLWTT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
             else
             {
-                Console.WriteLine("Invalid option. Please try again.");
-                Options();
+                if (!gate.supportsCFFT && !gate.supportsDDJB && !gate.supportsLWTT)
+                {
+                    suitableGate = gate;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
-        catch (FormatException ex)
+
+        if (suitableGate != null)
         {
-            Console.WriteLine("Invalid input format. Please enter a valid number.");
+            suitableGate.flight = currentFlight;
+            autoAssignedFlights++;
+            autoAssignedGates++;
+
+            string specialCode = "None";
+            if (currentFlight is CFFTFlight) { specialCode = "CFFT"; }
+            else if (currentFlight is DDJBFlight) { specialCode = "DDJB"; }
+            else if (currentFlight is LWTTFlight) { specialCode = "LWTT"; }
+
+            while (true)
+            {
+                Airline chosenAirline = terminal.GetAirlineFromFlight(currentFlight);
+                string flightNumber = currentFlight.FlightNumber;
+                string assignedGateName = "Unassigned";
+                foreach (var gate in terminal.boardingGates.Values)
+                {
+                    if (gate.flight != null && gate.flight.FlightNumber == flightNumber)
+                    {
+                        assignedGateName = gate.gateName;
+                        break;
+                    }
+                }
+
+                Console.WriteLine($"\nFlight Number: {currentFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
+                    $"\nOrigin: {currentFlight.Origin} \nDestination: {currentFlight.Destination} " +
+                    $"\nExpected Time: {currentFlight.ExpectedTime} \nSpecial Request Code: {specialCode} \nBoarding Gate: {assignedGateName}");
+                break;
+            }
+        }
+    }
+
+    int totalFlights = terminal.flights.Count;
+    int totalGates = terminal.boardingGates.Count;
+
+    Console.WriteLine($"\nProcessed Results:");
+    Console.WriteLine($"Assigned Flights: {autoAssignedFlights}/{totalUnassignedFlights}");
+    Console.WriteLine($"Assigned Gates: {autoAssignedGates}/{totalUnassignedGates}");
+
+    double flightPercentage = totalUnassignedFlights > 0 ?
+        (autoAssignedFlights * 100.0) / totalUnassignedFlights : 0;
+    double gatePercentage = totalUnassignedGates > 0 ?
+        (autoAssignedGates * 100.0) / totalUnassignedGates : 0;
+
+    Console.WriteLine($"Automatically Assigned: {flightPercentage:F2}% of flights, " + $"{gatePercentage:F2}% of gates");
+}
+
+
+//==========================================================
+// Student Number	: S10266910B
+// Student Name	: Dylan Loh
+// Partner Name	: Pradyun
+//==========================================================
+
+// ADVANCED FEATURE (b)
+void DisplayTotalFeePerAirline()
+{
+    // Check if all flights have been assigned boarding gates
+    foreach (var flight in terminal.flights.Values)
+    {
+        bool gateAssigned = terminal.boardingGates.Values.Any(g => g.flight?.FlightNumber == flight.FlightNumber);
+        if (!gateAssigned)
+        {
+            Console.WriteLine($"Flight {flight.FlightNumber} has not been assigned a boarding gate. Please assign all flights before running this feature.");
+            return;
+        }
+    }
+
+    double totalFees = 0;
+    double totalDiscounts = 0;
+
+    Console.WriteLine("Airline Fees for the Day:");
+    foreach (var airline in terminal.airlines.Values)
+    {
+        double airlineFees = 0;
+        double airlineDiscounts = 0;
+        int flightCount = airline.Flights.Count;
+        int earlyLateFlightCount = 0;
+        int specificOriginCount = 0;
+        int noSpecialRequestCount = 0;
+
+        foreach (var flight in airline.Flights.Values)
+        {
+            // Calculate base fees
+            if (flight.Origin == "SIN")
+            {
+                airlineFees += 800;
+            }
+            if (flight.Destination == "SIN")
+            {
+                airlineFees += 500;
+            }
+
+            // Add boarding gate base fee
+            airlineFees += 300;
+
+            // Add special request fees
+            if (flight is DDJBFlight)
+            {
+                airlineFees += 300;
+            }
+            else if (flight is CFFTFlight)
+            {
+                airlineFees += 150;
+            }
+            else if (flight is LWTTFlight)
+            {
+                airlineFees += 500;
+            }
+
+            // Check for early or late flights
+            if (flight.ExpectedTime.ToString("hh tt") == "11 AM" || flight.ExpectedTime.ToString("hh tt") == "09 PM")
+            {
+                earlyLateFlightCount++;
+            }
+
+            // Check for specific origins
+            if (flight.Origin == "DXB" || flight.Origin == "BKK" || flight.Origin == "NRT")
+            {
+                specificOriginCount++;
+            }
+
+            // Check for special request codes
+            if (!(flight is DDJBFlight) && !(flight is CFFTFlight) && !(flight is LWTTFlight))
+            {
+                noSpecialRequestCount++;
+            }
+        }
+
+        // Apply discounts
+        airlineDiscounts += (flightCount / 3) * 350;
+        airlineDiscounts += earlyLateFlightCount * 110;
+        airlineDiscounts += specificOriginCount * 25;
+        airlineDiscounts += noSpecialRequestCount * 50;
+
+        if (flightCount > 5)
+        {
+            airlineDiscounts += airlineFees * 0.03;
+        }
+
+        double finalFees = airlineFees - airlineDiscounts;
+        totalFees += airlineFees;
+        totalDiscounts += airlineDiscounts;
+
+        Console.WriteLine($"Airline: {airline.Name}");
+        Console.WriteLine($"Original Subtotal: {airlineFees:C}");
+        Console.WriteLine($"Discounts: {airlineDiscounts:C}");
+        Console.WriteLine($"Final Total: {finalFees:C}");
+        Console.WriteLine();
+    }
+
+    double finalTotalFees = totalFees - totalDiscounts;
+    double discountPercentage = (totalDiscounts / totalFees) * 100;
+
+    Console.WriteLine("Summary:");
+    Console.WriteLine($"Subtotal of All Airline Fees: {totalFees:C}");
+    Console.WriteLine($"Subtotal of All Airline Discounts: {totalDiscounts:C}");
+    Console.WriteLine($"Final Total of Airline Fees Collected: {finalTotalFees:C}");
+    Console.WriteLine($"Percentage of Discounts Over Final Total: {discountPercentage:F2}%");
+}
+
+
+
+//==========================================================
+//DISPLAY MENU
+//==========================================================
+void displayMenu()
+{
+
+    DisplayTotalFeePerAirline();
+
+    Console.WriteLine("\nLoading Airlines...\r\n" +
+    "8 Airlines Loaded!\r\nLoading Boarding Gates...\r\n" +
+    "66 Boarding Gates Loaded!\r\n" +
+    "Loading Flights...\r\n" +
+    "30 Flights Loaded!\r\n\n\n\n");
+
+    Console.WriteLine(
+        "=============================================\r\n" +
+        "Welcome to Changi Airport Terminal 5\r\n" +
+        "=============================================\r\n" +
+        "1. List All Flights\r\n" +
+        "2. List Boarding Gates\r\n" +
+        "3. Assign a Boarding Gate to a Flight\r\n" +
+        "4. Create Flight\r\n" +
+        "5. Display Airline Flights\r\n" +
+        "6. Modify Flight Details\r\n" +
+        "7. Display Flight Schedule\r\n" +
+        "0. Exit\r\n");
+
+    Options();
+}
+displayMenu();
+void Options()
+{
+    try
+    {
+        Console.WriteLine("Please select your option:");
+        int option = Convert.ToInt32(Console.ReadLine());
+
+        if (option == 1)
+        {
+            listAllFlights();
+        }
+        else if (option == 2)
+        {
+            listAllBoardingGates();
+        }
+        else if (option == 3)
+        {
+            AssigningBoardingGateToFlight();
+        }
+        else if (option == 4)
+        {
+            CreateNewFlight();
+        }
+        else if (option == 5)
+        {
+            displayAirlineFlights();
+        }
+        else if (option == 6)
+        {
+            modifyFlightDetails();
+        }
+        else if (option == 7)
+        {
+            DisplayFlightSchedule();
+        }
+        else if (option == 0)
+        {
+            Console.WriteLine("Goodbye!");
+        }
+        else
+        {
+            Console.WriteLine("Invalid option. Please try again.");
             Options();
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            Options();
-        }
+    }
+    catch (FormatException ex)
+    {
+        Console.WriteLine("Invalid input format. Please enter a valid number.");
+        Options();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred: {ex.Message}");
+        Options();
     }
 }
