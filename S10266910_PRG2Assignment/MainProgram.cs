@@ -163,99 +163,113 @@ void AssigningBoardingGateToFlight()
 
     while (true)
     {
-        Console.WriteLine("Enter Flight Number:");
-        string flightNumber = formatFlightNumber(Console.ReadLine());
-
-        if (!terminal.flights.ContainsKey(flightNumber))
+        try
         {
-            Console.WriteLine("Flight not found.");
-            continue;
-        }
+            Console.WriteLine("Enter Flight Number:");
+            string flightNumber = formatFlightNumber(Console.ReadLine());
 
-        Flight flight = terminal.flights[flightNumber];
-        Console.WriteLine("Enter Boarding Gate Name:");
-        string? gateName = Console.ReadLine().ToUpper();
-
-        if (!terminal.boardingGates.ContainsKey(gateName))
-        {
-            Console.WriteLine("Boarding Gate not found. Please enter a valid gate:");
-            gateName = Console.ReadLine();
-            continue;
-        }
-
-        BoardingGate gate = terminal.boardingGates[gateName];
-
-        if (gate.flight != null)
-        {
-            Console.WriteLine("Boarding Gate is already assigned to another flight. Please enter a different gate:");
-            gateName = Console.ReadLine();
-            continue;
-        }
-
-
-        string SpecialRequestCode = flight.GetType().Name;
-        if (SpecialRequestCode == "NORMFlight")
-        {
-            SpecialRequestCode = "None";
-        }
-        else if (SpecialRequestCode == "DDJBFlight")
-        {
-            SpecialRequestCode = "DDJB";
-        }
-        else if (SpecialRequestCode == "LWTTFlight")
-        {
-            SpecialRequestCode = "LWTT";
-        }
-        else if (SpecialRequestCode == "CFFTFlight")
-        {
-            SpecialRequestCode = "CFFT";
-        }
-
-        gate.flight = flight;
-
-        Console.WriteLine($"Flight Number: {flight.FlightNumber}");
-        Console.WriteLine($"Origin: {flight.Origin}");
-        Console.WriteLine($"Destination: {flight.Destination}");
-        Console.WriteLine($"Expected Time: {flight.ExpectedTime}");
-        Console.WriteLine($"Special Request Code: {SpecialRequestCode}");
-        Console.WriteLine($"Boarding Gate Name: {gate.gateName}");
-        Console.WriteLine($"Supports DDJB: {gate.supportsDDJB}");
-        Console.WriteLine($"Supports CFFT: {gate.supportsCFFT}");
-        Console.WriteLine($"Supports LWTT: {gate.supportsLWTT}");
-
-        Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
-        string updateStatus = Console.ReadLine();
-
-        if (updateStatus.ToUpper() == "Y")
-        {
-            Console.WriteLine("1. Delayed");
-            Console.WriteLine("2. Boarding");
-            Console.WriteLine("3. On Time");
-            Console.WriteLine("Please select the new status of the flight:");
-            int statusOption = Convert.ToInt32(Console.ReadLine());
-
-            if (statusOption == 1)
+            if (!terminal.flights.ContainsKey(flightNumber))
             {
-                flight.Status = "Delayed";
+                throw new ArgumentException("Flight not found.");
             }
-            else if (statusOption == 2)
+
+            Flight flight = terminal.flights[flightNumber];
+            Console.WriteLine("Enter Boarding Gate Name:");
+            string? gateName = Console.ReadLine().ToUpper();
+
+            if (!terminal.boardingGates.ContainsKey(gateName))
             {
-                flight.Status = "Boarding";
+                throw new ArgumentException("Boarding Gate not found. Please enter a valid gate.");
             }
-            else if (statusOption == 3)
+
+            BoardingGate gate = terminal.boardingGates[gateName];
+
+            if (gate.flight != null)
+            {
+                throw new InvalidOperationException("Boarding Gate is already assigned to another flight. Please enter a different gate.");
+            }
+
+            string SpecialRequestCode = flight.GetType().Name;
+            if (SpecialRequestCode == "NORMFlight")
+            {
+                SpecialRequestCode = "None";
+            }
+            else if (SpecialRequestCode == "DDJBFlight")
+            {
+                SpecialRequestCode = "DDJB";
+            }
+            else if (SpecialRequestCode == "LWTTFlight")
+            {
+                SpecialRequestCode = "LWTT";
+            }
+            else if (SpecialRequestCode == "CFFTFlight")
+            {
+                SpecialRequestCode = "CFFT";
+            }
+
+            gate.flight = flight;
+
+            Console.WriteLine($"Flight Number: {flight.FlightNumber}");
+            Console.WriteLine($"Origin: {flight.Origin}");
+            Console.WriteLine($"Destination: {flight.Destination}");
+            Console.WriteLine($"Expected Time: {flight.ExpectedTime}");
+            Console.WriteLine($"Special Request Code: {SpecialRequestCode}");
+            Console.WriteLine($"Boarding Gate Name: {gate.gateName}");
+            Console.WriteLine($"Supports DDJB: {gate.supportsDDJB}");
+            Console.WriteLine($"Supports CFFT: {gate.supportsCFFT}");
+            Console.WriteLine($"Supports LWTT: {gate.supportsLWTT}");
+
+            Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
+            string updateStatus = Console.ReadLine();
+
+            if (updateStatus.ToUpper() == "Y")
+            {
+                Console.WriteLine("1. Delayed");
+                Console.WriteLine("2. Boarding");
+                Console.WriteLine("3. On Time");
+                Console.WriteLine("Please select the new status of the flight:");
+                int statusOption = Convert.ToInt32(Console.ReadLine());
+
+                if (statusOption == 1)
+                {
+                    flight.Status = "Delayed";
+                }
+                else if (statusOption == 2)
+                {
+                    flight.Status = "Boarding";
+                }
+                else if (statusOption == 3)
+                {
+                    flight.Status = "On Time";
+                }
+            }
+            else
             {
                 flight.Status = "On Time";
             }
-        }
-        else
-        {
-            flight.Status = "On Time";
-        }
 
-        Console.WriteLine($"{flight.Status} Flight {flight.FlightNumber} has been assigned to Boarding Gate {gate.gateName}!");
-        break;
+            Console.WriteLine($"{flight.Status} Flight {flight.FlightNumber} has been assigned to Boarding Gate {gate.gateName}!");
+            break;
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine($"Error: Invalid input format. {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+        }
     }
 }
+
 
 //==========================================================
 // Student Number	: S10267635J
@@ -266,52 +280,96 @@ void AssigningBoardingGateToFlight()
 // FEATURE 6
 void CreateNewFlight()
 {
-    Console.Write("Enter Flight Number: ");
-    string? flightNumber = Console.ReadLine().ToUpper();
-    Console.Write("Enter Origin: ");
-    string? Origin = Console.ReadLine().ToUpper();
-    Console.Write("Enter Destination: ");
-    string? Destination = Console.ReadLine().ToUpper();
-    Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
-    DateTime ExpectedTime = Convert.ToDateTime(Console.ReadLine());
-    Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
-    string? SpecialRequestCode = Console.ReadLine();
-    Flight flight;
-    string Status = "Scheduled";
-    if (SpecialRequestCode.ToUpper() == "DDJB")
+    try
     {
-        flight = new DDJBFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
-    }
-    else if (SpecialRequestCode.ToUpper() == "LWTT")
-    {
-        flight = new LWTTFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
-    }
-    else if (SpecialRequestCode.ToUpper() == "CFFT")
-    {
-        flight = new CFFTFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
-    }
-    else
-    {
-        flight = new NORMFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
-    }
-    terminal.flights.Add(flightNumber, flight);
+        Console.Write("Enter Flight Number: ");
+        string? flightNumber = Console.ReadLine().ToUpper();
+        if (string.IsNullOrWhiteSpace(flightNumber))
+        {
+            throw new ArgumentException("Flight Number cannot be empty.");
+        }
 
+        Console.Write("Enter Origin: ");
+        string? Origin = Console.ReadLine().ToUpper();
+        if (string.IsNullOrWhiteSpace(Origin))
+        {
+            throw new ArgumentException("Origin cannot be empty.");
+        }
 
-    using (StreamWriter sw = File.AppendText("flights.csv"))
-    {
-        sw.WriteLine($"{flightNumber},{Origin},{Destination},{ExpectedTime},{SpecialRequestCode}");
-    }
+        Console.Write("Enter Destination: ");
+        string? Destination = Console.ReadLine().ToUpper();
+        if (string.IsNullOrWhiteSpace(Destination))
+        {
+            throw new ArgumentException("Destination cannot be empty.");
+        }
 
-    Console.WriteLine($"{flightNumber} has been added!");
-    Console.WriteLine("Would you like to add another flight? (Y/N)");
-    string? addAnotherFlight = Console.ReadLine();
-    if (addAnotherFlight.ToUpper() == "Y")
-    {
-        CreateNewFlight();
+        Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
+        DateTime ExpectedTime;
+        if (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out ExpectedTime))
+        {
+            throw new FormatException("Invalid date format. Please enter the date in the format dd/mm/yyyy hh:mm.");
+        }
+
+        Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
+        string? SpecialRequestCode = Console.ReadLine().ToUpper();
+        if (string.IsNullOrWhiteSpace(SpecialRequestCode))
+        {
+            throw new ArgumentException("Special Request Code cannot be empty.");
+        }
+
+        Flight flight;
+        string Status = "Scheduled";
+        if (SpecialRequestCode == "DDJB")
+        {
+            flight = new DDJBFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
+        }
+        else if (SpecialRequestCode == "LWTT")
+        {
+            flight = new LWTTFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
+        }
+        else if (SpecialRequestCode == "CFFT")
+        {
+            flight = new CFFTFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
+        }
+        else if (SpecialRequestCode == "NONE")
+        {
+            flight = new NORMFlight(flightNumber, Origin, Destination, ExpectedTime, Status);
+        }
+        else
+        {
+            throw new ArgumentException("Invalid Special Request Code. Please enter CFFT, DDJB, LWTT, or None.");
+        }
+
+        terminal.flights.Add(flightNumber, flight);
+
+        using (StreamWriter sw = File.AppendText("flights.csv"))
+        {
+            sw.WriteLine($"{flightNumber},{Origin},{Destination},{ExpectedTime},{SpecialRequestCode}");
+        }
+
+        Console.WriteLine($"{flightNumber} has been added!");
+        Console.WriteLine("Would you like to add another flight? (Y/N)");
+        string? addAnotherFlight = Console.ReadLine();
+        if (addAnotherFlight.ToUpper() == "Y")
+        {
+            CreateNewFlight();
+        }
+        else
+        {
+            displayMenu();
+        }
     }
-    else
+    catch (ArgumentException ex)
     {
-        displayMenu();
+        Console.WriteLine($"Error: {ex.Message}");
+    }
+    catch (FormatException ex)
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An unexpected error occurred: {ex.Message}");
     }
 }
 
