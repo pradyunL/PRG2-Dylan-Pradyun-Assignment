@@ -53,6 +53,11 @@ void ReadBoardingGateFile(string filepath, Terminal terminal)
         BoardingGate boardingGate = new BoardingGate(gateName,supportsDDJB, supportsCFFT, supportsLWTT);
         terminal.AddBoardingGate(boardingGate);
     }
+    Console.WriteLine("Loading Airlines...\r\n" +
+        "8 Airlines Loaded!\r\nLoading Boarding Gates...\r\n" +
+        "66 Boarding Gates Loaded!\r\n" +
+        "Loading Flights...\r\n" +
+        "30 Flights Loaded!\r\n\n\n");
 }
 ReadBoardingGateFile("boardinggates.csv",terminal);
 
@@ -421,9 +426,11 @@ void flightChoice()
                 flightSPC = "LWTT";
             }
 
-            Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
-                $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {flightSPC} \nBoarding Gate: {assignedGateName}");
+            Console.WriteLine(
+"Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time\n" +
+"Status          Boarding Gate          Special Request Code");
+            Console.WriteLine($"{chosenFlight.FlightNumber,-15} {chosenAirline.Name,-22} {chosenFlight.Origin,-22} {chosenFlight.Destination,-22} {chosenFlight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
+            Console.WriteLine($"{chosenFlight.Status,-15} {assignedGateName,-22} {flightSPC}");
             break;
         }
         else
@@ -523,9 +530,11 @@ void modifyFlightDetails()
                             flightSPC = "LWTT";
                         }
 
-                        Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline.Name} " +
-                            $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                            $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {flightSPC} \nBoarding Gate: {assignedGateName} \nStatus: {chosenFlight.Status}");
+                        Console.WriteLine(
+"Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time\n" +
+"Status          Boarding Gate          Special Request Code");
+                        Console.WriteLine($"{chosenFlight.FlightNumber,-15} {chosenAirline.Name,-22} {chosenFlight.Origin,-22} {chosenFlight.Destination,-22} {chosenFlight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
+                        Console.WriteLine($"{chosenFlight.Status,-15} {assignedGateName,-22} {flightSPC}");
                     }
                     else
                     {
@@ -649,10 +658,11 @@ void modifyFlightDetails()
                     {
                         flightSPC2 = "LWTT";
                     }
-
-                    Console.WriteLine($"\nFlight Number: {chosenFlight.FlightNumber} \nAirline Name: {chosenAirline2.Name} " +
-                        $"\nOrigin: {chosenFlight.Origin} \nDestination: {chosenFlight.Destination} " +
-                        $"\nExpected Time: {chosenFlight.ExpectedTime} \nSpecial Request Code: {flightSPC2} \nBoarding Gate: {assignedGateName2} \nStatus: {chosenFlight.Status}");
+                    Console.WriteLine(
+        "Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time\n" +
+        "Status          Boarding Gate          Special Request Code");
+                    Console.WriteLine($"{chosenFlight.FlightNumber,-15} {chosenAirline2.Name,-22} {chosenFlight.Origin,-22} {chosenFlight.Destination,-22} {chosenFlight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
+                    Console.WriteLine($"{chosenFlight.Status,-15} {assignedGateName2,-22} {flightSPC2}");
                     break;
                 }
             }
@@ -702,7 +712,6 @@ void modifyFlightDetails()
         }
     }
 }
-modifyFlightDetails();
 
 //==========================================================
 // Student Number	: S10266910B
@@ -1006,29 +1015,25 @@ void DisplayTotalFeePerAirline()
 //==========================================================
 void displayMenu()
 {
+    while (true)
+    {
+        Console.WriteLine(
+            "=============================================\r\n" +
+            "Welcome to Changi Airport Terminal 5\r\n" +
+            "=============================================\r\n" +
+            "1. List All Flights\r\n" +
+            "2. List Boarding Gates\r\n" +
+            "3. Assign a Boarding Gate to a Flight\r\n" +
+            "4. Create Flight\r\n" +
+            "5. Display Airline Flights\r\n" +
+            "6. Modify Flight Details\r\n" +
+            "7. Display Flight Schedule\r\n" +
+            "0. Exit\r\n"+
+            "8. Advanced Feature(a)\r\n"+
+            "9. Advanced Feature(b)\r\n");
 
-    DisplayTotalFeePerAirline();
-
-    Console.WriteLine("\nLoading Airlines...\r\n" +
-    "8 Airlines Loaded!\r\nLoading Boarding Gates...\r\n" +
-    "66 Boarding Gates Loaded!\r\n" +
-    "Loading Flights...\r\n" +
-    "30 Flights Loaded!\r\n\n\n\n");
-
-    Console.WriteLine(
-        "=============================================\r\n" +
-        "Welcome to Changi Airport Terminal 5\r\n" +
-        "=============================================\r\n" +
-        "1. List All Flights\r\n" +
-        "2. List Boarding Gates\r\n" +
-        "3. Assign a Boarding Gate to a Flight\r\n" +
-        "4. Create Flight\r\n" +
-        "5. Display Airline Flights\r\n" +
-        "6. Modify Flight Details\r\n" +
-        "7. Display Flight Schedule\r\n" +
-        "0. Exit\r\n");
-
-    Options();
+        Options();
+    }
 }
 displayMenu();
 void Options()
@@ -1069,6 +1074,14 @@ void Options()
         else if (option == 0)
         {
             Console.WriteLine("Goodbye!");
+        }
+        else if (option == 8)
+        {
+            BulkAssignFlightsToGates();
+        }
+        else if (option == 9)
+        {
+            DisplayTotalFeePerAirline();
         }
         else
         {
