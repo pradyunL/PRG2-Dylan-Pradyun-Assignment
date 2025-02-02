@@ -114,6 +114,7 @@ void ReadFlightFile(string filepath)
         }
     }
 }
+
 ReadFlightFile("flights.csv");
 
 //==========================================================
@@ -127,12 +128,9 @@ ReadFlightFile("flights.csv");
 void listAllFlights()
 {
     Console.WriteLine("Flight Number   Airline Name           Origin                 Destination            Expected Departure/Arrival Time");
-    foreach (var airline in terminal.airlines.Values)
+    foreach (var flight in terminal.flights.Values)
     {
-        foreach (var flight in terminal.flights.Values)
-        {
-            Console.WriteLine($"{flight.FlightNumber,-15} {airline.Name,-22} {flight.Origin,-22} {flight.Destination,-22} {flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
-        }
+        Console.WriteLine($"{flight.FlightNumber,-15} {terminal.GetAirlineFromFlight(flight).Name,-22} {flight.Origin,-22} {flight.Destination,-22} {flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-24}");
     }
 }
 
@@ -1032,71 +1030,68 @@ void displayMenu()
             "8. Advanced Feature(a)\r\n"+
             "9. Advanced Feature(b)\r\n");
 
-        Options();
+        try
+        {
+            Console.WriteLine("Please select your option:");
+            int option = Convert.ToInt32(Console.ReadLine());
+
+            if (option == 1)
+            {
+                listAllFlights();
+            }
+            else if (option == 2)
+            {
+                listAllBoardingGates();
+            }
+            else if (option == 3)
+            {
+                AssigningBoardingGateToFlight();
+            }
+            else if (option == 4)
+            {
+                CreateNewFlight();
+            }
+            else if (option == 5)
+            {
+                displayAirlineFlights();
+            }
+            else if (option == 6)
+            {
+                modifyFlightDetails();
+            }
+            else if (option == 7)
+            {
+                DisplayFlightSchedule();
+            }
+            else if (option == 0)
+            {
+                Console.WriteLine("Goodbye!");
+                break;
+            }
+            else if (option == 8)
+            {
+                BulkAssignFlightsToGates();
+            }
+            else if (option == 9)
+            {
+                DisplayTotalFeePerAirline();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please try again.");
+                continue;
+            }
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine("Invalid input format. Please enter a valid number.");
+            continue;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            continue;
+        }
     }
 }
 displayMenu();
-void Options()
-{
-    try
-    {
-        Console.WriteLine("Please select your option:");
-        int option = Convert.ToInt32(Console.ReadLine());
-
-        if (option == 1)
-        {
-            listAllFlights();
-        }
-        else if (option == 2)
-        {
-            listAllBoardingGates();
-        }
-        else if (option == 3)
-        {
-            AssigningBoardingGateToFlight();
-        }
-        else if (option == 4)
-        {
-            CreateNewFlight();
-        }
-        else if (option == 5)
-        {
-            displayAirlineFlights();
-        }
-        else if (option == 6)
-        {
-            modifyFlightDetails();
-        }
-        else if (option == 7)
-        {
-            DisplayFlightSchedule();
-        }
-        else if (option == 0)
-        {
-            Console.WriteLine("Goodbye!");
-        }
-        else if (option == 8)
-        {
-            BulkAssignFlightsToGates();
-        }
-        else if (option == 9)
-        {
-            DisplayTotalFeePerAirline();
-        }
-        else
-        {
-            Console.WriteLine("Invalid option. Please try again.");
-            Options();
-        }
-    }
-    catch (FormatException ex)
-    {
-        Console.WriteLine("Invalid input format. Please enter a valid number.");
-        Options();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"An error occurred: {ex.Message}");
-        Options();
-    }
-}
